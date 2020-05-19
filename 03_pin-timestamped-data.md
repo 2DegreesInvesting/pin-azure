@@ -1,7 +1,7 @@
 Creating and using timestamped pins
 ================
 
-Here I show two workflows that may be useful for a data admin and for a
+Here I show two workflows: One for a data admin, and another one for a
 data analyst. The data admin adds timestamped versions of a dataset to
 an Azure board for pins, and the data analyst uses the latest version.
 Let me know if this won’t work, why, and hopefully an idea about how we
@@ -9,8 +9,10 @@ may adapt it to fit your needs.
 
 ## Setup
 
-  - Setup your environmental variables: 01\_setup-azure-board.Rmd.
-  - Use pins and register the Azure board (expect no output).
+  - I setup my environmental variables as shown in
+    01\_setup-azure-board.Rmd.
+  - First I use the pins package, and register the Azure board (expect
+    no output).
 
 <!-- end list -->
 
@@ -22,7 +24,9 @@ board_register_azure()
 ## A data admin creates a timestamped pin.
 
 Here I’m setting the few parameters that vary: the dataset itself and
-the dataset name.
+the dataset name. This is a toy example using the `mtcars` dataset that
+comes from the datasets package. Instead you would be using a file that
+is likely a specific, flat view of a relational database.
 
 ``` r
 x <- mtcars
@@ -41,7 +45,7 @@ timestamp_name <- function(name) {
 }
 
 (name_now <- timestamp_name(name))
-#> [1] "a_dataset_2020-05-19_19-48-03"
+#> [1] "a_dataset_2020-05-19_19-53-49"
 
 pin(x, name = name_now, board = "azure", description = description)
 #> No encoding supplied: defaulting to UTF-8.
@@ -56,22 +60,22 @@ tail(pin_find(name), 2)
 #> # A tibble: 2 x 4
 #>   name                          description                   type  board
 #>   <chr>                         <chr>                         <chr> <chr>
-#> 1 a_dataset_2020-05-19_19-44-17 A flat file from the database table azure
-#> 2 a_dataset_2020-05-19_19-48-03 A flat file from the database table azure
+#> 1 a_dataset_2020-05-19_19-53-34 A flat file from the database table azure
+#> 2 a_dataset_2020-05-19_19-53-49 A flat file from the database table azure
 ```
 
 ## Verify the timestamped pins are accumulating
 
-Let’s confirm that (name\_now \<- timestamp\_name(name)I create a new
-timestamped version of the) dataset every time I call `pin(name_now,
-board = "azure")`. To make this clearer I first wait for a few seconds
-so the timestamps are different by more than one second. I then pin yet
-another timestamped version of the working dataset.
+Let’s confirm that I create a new timestamped version of the dataset
+every time I call `pin(name_now, board = "azure")`. To make this clearer
+I first wait for a few seconds so the timestamps are different by more
+than one second. I then pin yet another timestamped version of the
+working dataset.
 
 ``` r
 Sys.sleep(3)
 (name_now <- timestamp_name(name))
-#> [1] "a_dataset_2020-05-19_19-48-07"
+#> [1] "a_dataset_2020-05-19_19-53-54"
 
 pin(x, name = name_now, board = "azure", description = description)
 #> No encoding supplied: defaulting to UTF-8.
@@ -85,8 +89,8 @@ tail(pin_find(name), 2)
 #> # A tibble: 2 x 4
 #>   name                          description                   type  board
 #>   <chr>                         <chr>                         <chr> <chr>
-#> 1 a_dataset_2020-05-19_19-48-03 A flat file from the database table azure
-#> 2 a_dataset_2020-05-19_19-48-07 A flat file from the database table azure
+#> 1 a_dataset_2020-05-19_19-53-49 A flat file from the database table azure
+#> 2 a_dataset_2020-05-19_19-53-54 A flat file from the database table azure
 ```
 
 ## An analyst gets the latest timestamped dataset
@@ -99,7 +103,7 @@ library(pins)
 board_register_azure()
 
 (latest <- dplyr::last(pin_find(name)$name))
-#> [1] "a_dataset_2020-05-19_19-48-07"
+#> [1] "a_dataset_2020-05-19_19-53-54"
 
 pin_get(latest)
 #> # A tibble: 32 x 11

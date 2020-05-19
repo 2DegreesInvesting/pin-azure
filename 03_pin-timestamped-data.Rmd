@@ -12,12 +12,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-Here I show two workflows that may be useful for a data admin and for a data analyst. The data admin adds timestamped versions of a dataset to an Azure board for pins, and the data analyst uses the latest version. Let me know if this won't work, why, and hopefully an idea about how we may adapt it to fit your needs.
+Here I show two workflows: One for a data admin, and another one for a data analyst. The data admin adds timestamped versions of a dataset to an Azure board for pins, and the data analyst uses the latest version. Let me know if this won't work, why, and hopefully an idea about how we may adapt it to fit your needs.
 
 ## Setup
 
-* Setup your environmental variables: 01_setup-azure-board.Rmd.
-* Use pins and register the Azure board (expect no output).
+* I setup my environmental variables as shown in 01_setup-azure-board.Rmd.
+* First I use the pins package, and register the Azure board (expect no output).
 
 ```{r}
 library(pins)
@@ -26,7 +26,7 @@ board_register_azure()
 
 ## A data admin creates a timestamped pin.
 
-Here I'm setting the few parameters that vary: the dataset itself and the dataset name.
+Here I'm setting the few parameters that vary: the dataset itself and the dataset name. This is a toy example using the `mtcars` dataset that comes from the datasets package. Instead you would be using a file that is likely a specific, flat view of a relational database.
 
 ```{r}
 x <- mtcars
@@ -56,9 +56,7 @@ tail(pin_find(name), 2)
 
 ## Verify the timestamped pins are accumulating 
 
-Let's confirm that
-(name_now <- timestamp_name(name)I create a new timestamped version of the)
-dataset every time I call `pin(name_now, board = "azure")`. To make this clearer I first wait for a few seconds so the timestamps are different by more than one second. I then pin yet another timestamped version of the working dataset.
+Let's confirm that I create a new timestamped version of the dataset every time I call `pin(name_now, board = "azure")`. To make this clearer I first wait for a few seconds so the timestamps are different by more than one second. I then pin yet another timestamped version of the working dataset.
 
 ```{r}
 Sys.sleep(3)
