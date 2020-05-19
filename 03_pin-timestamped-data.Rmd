@@ -1,0 +1,95 @@
+---
+title: "pins and Azure from a server"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  cache = FALSE,
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+This lesson is mostly for data admins. The goal is to add new timestamped versions of a dataset to an Azure board for pins.
+
+## Setup
+
+* Setup your environmental variables: 01_setup-azure-board.Rmd.
+* Use pins and register the Azure board (expect no output).
+
+```{r}
+library(pins)
+board_register_azure()
+```
+
+## A data admin creates a timestamped pin.
+
+Setup the two things that vary: the dataset itself and the dataset name.
+
+```{r}
+x <- mtcars
+name <- "a_dataset"
+description <- "A flat file from the database"
+```
+
+* Helper to create a timestamped file name.
+
+```{r}
+# Helper
+timestamp_name <- function(filename) {
+  timestamp <- format(Sys.time(), "%F_%H-%M")
+  paste0(filename, "_", timestamp)
+}
+```
+
+* Pin a new timestamped version of the working dataset.
+
+```{r}
+(name_now <- timestamp_name(name))
+pin(x, name_now, board = "azure", description = description)
+```
+
+* Explore available timestamped versions on the Azure board.
+
+```{r}
+tail(pin_find(name), 2)
+```
+
+## Verify the timestamped pins are accumulating 
+
+Here I repeat to confirm we create a new timestamped file every time we call `pin(timestamp_name(name), board = "azure")`.
+
+* To make this clearer I first wait for a few seconds.
+
+```{r}
+Sys.sleep(3)
+```
+* I now pin a new timestamped version of the working dataset.
+
+```{r}
+(name_now <- timestamp_name(name))
+pin(x, name_now, board = "azure", description = description)
+```
+
+* Again I explore available timestamped versions on the Azure board.
+
+```{r}
+tail(pin_find(name), 2)
+```
+
+## An analyst gets the latest timestamped dataset
+
+* An analyst may get any timestamped version; commonly the latest one.
+
+```{r}
+# See pins setup: 01_setup-azure-board.Rmd
+library(pins)
+board_register_azure()
+
+(latest <- dplyr::last(pin_find(name)$name))
+
+pin_get(latest)
+```
+
