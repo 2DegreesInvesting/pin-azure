@@ -17,8 +17,8 @@ See headings outline.
 * Register our Azure board with `board_register_azure()`
 
 ```{r}
-library(pins)
-board_register_azure()
+library(____)
+board_register______()
 ```
 
 
@@ -30,7 +30,7 @@ board_register_azure()
 * Find pins on our Azure board with `pin_find()`, by name or description.
 
 ```{r}
-pin_find("mtcars", board = "azure")
+________("mtcars", board = "azure")
 ```
 
 
@@ -42,7 +42,7 @@ pin_find("mtcars", board = "azure")
 * Inspect mydata however you like. How many rows does it have?
 
 ```{r}
-mydata <- pin_get("mtcars", board = "azure")
+______ <- _______("mtcars", board = "_____")
 mydata
 ```
 
@@ -53,26 +53,26 @@ mydata
 * Get the `head()` of `mydata` and assign it to a new object `smalldata`.
 
 ```{r}
-smalldata <- head(mydata)
+_________ <- head(______)
 smalldata
 ```
 
 * Store `smalldata` in you local (server) cache with `pin()`
 
 ```{r}
-pin(smalldata)
+___(smalldata)
 ```
 
 * Find "smalldata" in your local (server) cache, however you like.
 
 ```{r}
-pin_find("smalldata")
+________("_________")
 ```
 
 * Get "smalldata" from your local (server) cache.
 
 ```{r}
-pin_get("smalldata", board = "local")
+_______("_________")
 ```
 
 
