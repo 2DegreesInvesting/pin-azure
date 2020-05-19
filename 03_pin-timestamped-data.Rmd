@@ -1,5 +1,5 @@
 ---
-title: "pins and Azure from a server"
+title: "Creating and using timestamped pins"
 output: github_document
 ---
 
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This lesson is mostly for data admins. The goal is to add new timestamped versions of a dataset to an Azure board for pins.
+This lesson shows workflows that seem common for data admins and data analysts working in a team. It shows how to programatically add timestamped versions of a dataset to an Azure board for pins, and how to programatically get the latest version. This is how I imagine we could work at 2Dii, but please do let me know if this won't work, why, and hopefully an idea about how we may adapt it to fit your needs.
 
 ## Setup
 
