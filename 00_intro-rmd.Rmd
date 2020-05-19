@@ -6,6 +6,8 @@ output: github_document
 ## Objective
 
 * Run a code chunk.
+* Say "yes" on zoom.
+* Write "hi" in the relevant questions section at https://bit.ly/dsi-pin-azure
 
 
 
