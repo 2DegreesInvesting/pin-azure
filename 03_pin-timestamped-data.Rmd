@@ -26,7 +26,7 @@ board_register_azure()
 
 ## A data admin creates a timestamped pin.
 
-Setup the two things that vary: the dataset itself and the dataset name.
+Here I'm setting the few parameters that vary: the dataset itself and the dataset name.
 
 ```{r}
 x <- mtcars
@@ -34,24 +34,21 @@ name <- "a_dataset"
 description <- "A flat file from the database"
 ```
 
-* Helper to create a timestamped file name.
+We now create a new timestamped name and use it to create a new pin of the the dataset we want to share.
 
 ```{r}
 # Helper
-timestamp_name <- function(filename) {
-  timestamp <- format(Sys.time(), "%F_%H-%M")
-  paste0(filename, "_", timestamp)
+timestamp_name <- function(name) {
+  timestamp <- format(Sys.time(), "%F_%H-%M-%S")
+  paste0(name, "_", timestamp)
 }
-```
 
-* Pin a new timestamped version of the working dataset.
-
-```{r}
 (name_now <- timestamp_name(name))
-pin(x, name_now, board = "azure", description = description)
+
+pin(x, name = name_now, board = "azure", description = description)
 ```
 
-* Explore available timestamped versions on the Azure board.
+Let's see the last few timestamped versions we have on the Azure board. I use `tail()` because I created many versions and but we only care about the last few.
 
 ```{r}
 tail(pin_find(name), 2)
@@ -59,21 +56,18 @@ tail(pin_find(name), 2)
 
 ## Verify the timestamped pins are accumulating 
 
-Here I repeat to confirm we create a new timestamped file every time we call `pin(timestamp_name(name), board = "azure")`.
-
-* To make this clearer I first wait for a few seconds.
+Let's confirm that
+(name_now <- timestamp_name(name)I create a new timestamped version of the)
+dataset every time I call `pin(name_now, board = "azure")`. To make this clearer I first wait for a few seconds so the timestamps are different by more than one second. I then pin yet another timestamped version of the working dataset.
 
 ```{r}
 Sys.sleep(3)
-```
-* I now pin a new timestamped version of the working dataset.
-
-```{r}
 (name_now <- timestamp_name(name))
-pin(x, name_now, board = "azure", description = description)
+
+pin(x, name = name_now, board = "azure", description = description)
 ```
 
-* Again I explore available timestamped versions on the Azure board.
+And again I explore the last few timestamped versions I now have on the Azure board.
 
 ```{r}
 tail(pin_find(name), 2)
@@ -81,7 +75,7 @@ tail(pin_find(name), 2)
 
 ## An analyst gets the latest timestamped dataset
 
-* An analyst may get any timestamped version; commonly the latest one.
+An analyst may get any timestamped version; commonly the latest one.
 
 ```{r}
 # See pins setup: 01_setup-azure-board.Rmd
