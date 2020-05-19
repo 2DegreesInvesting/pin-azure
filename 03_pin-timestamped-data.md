@@ -1,12 +1,11 @@
 Creating and using timestamped pins
 ================
 
-This lesson shows workflows that seem common for data admins and data
-analysts working in a team. It shows how to programatically add
-timestamped versions of a dataset to an Azure board for pins, and how to
-programatically get the latest version. This is how I imagine we could
-work at 2Dii, but please do let me know if this won’t work, why, and
-hopefully an idea about how we may adapt it to fit your needs.
+Here I show two workflows that may be useful for a data admin and for a
+data analyst. The data admin adds timestamped versions of a dataset to
+an Azure board for pins, and the data analyst uses the latest version.
+Let me know if this won’t work, why, and hopefully an idea about how we
+may adapt it to fit your needs.
 
 ## Setup
 
@@ -42,7 +41,7 @@ timestamp_name <- function(name) {
 }
 
 (name_now <- timestamp_name(name))
-#> [1] "a_dataset_2020-05-19_19-44-12"
+#> [1] "a_dataset_2020-05-19_19-48-03"
 
 pin(x, name = name_now, board = "azure", description = description)
 #> No encoding supplied: defaulting to UTF-8.
@@ -57,8 +56,8 @@ tail(pin_find(name), 2)
 #> # A tibble: 2 x 4
 #>   name                          description                   type  board
 #>   <chr>                         <chr>                         <chr> <chr>
-#> 1 a_dataset_2020-05-19_19-43-56 A flat file from the database table azure
-#> 2 a_dataset_2020-05-19_19-44-12 A flat file from the database table azure
+#> 1 a_dataset_2020-05-19_19-44-17 A flat file from the database table azure
+#> 2 a_dataset_2020-05-19_19-48-03 A flat file from the database table azure
 ```
 
 ## Verify the timestamped pins are accumulating
@@ -72,7 +71,7 @@ another timestamped version of the working dataset.
 ``` r
 Sys.sleep(3)
 (name_now <- timestamp_name(name))
-#> [1] "a_dataset_2020-05-19_19-44-17"
+#> [1] "a_dataset_2020-05-19_19-48-07"
 
 pin(x, name = name_now, board = "azure", description = description)
 #> No encoding supplied: defaulting to UTF-8.
@@ -86,8 +85,8 @@ tail(pin_find(name), 2)
 #> # A tibble: 2 x 4
 #>   name                          description                   type  board
 #>   <chr>                         <chr>                         <chr> <chr>
-#> 1 a_dataset_2020-05-19_19-44-12 A flat file from the database table azure
-#> 2 a_dataset_2020-05-19_19-44-17 A flat file from the database table azure
+#> 1 a_dataset_2020-05-19_19-48-03 A flat file from the database table azure
+#> 2 a_dataset_2020-05-19_19-48-07 A flat file from the database table azure
 ```
 
 ## An analyst gets the latest timestamped dataset
@@ -100,7 +99,7 @@ library(pins)
 board_register_azure()
 
 (latest <- dplyr::last(pin_find(name)$name))
-#> [1] "a_dataset_2020-05-19_19-44-17"
+#> [1] "a_dataset_2020-05-19_19-48-07"
 
 pin_get(latest)
 #> # A tibble: 32 x 11
