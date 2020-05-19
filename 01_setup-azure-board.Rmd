@@ -1,0 +1,33 @@
+---
+title: "Setup an Azure board"
+output: github_document
+---
+
+<https://pins.rstudio.com/articles/boards-azure.html>
+
+## Objectives
+
+* Setup an Azure board for pins.
+
+## Setup an Azure board for pins
+
+* Open your .Renviron file with `usethis::edit_r_environ()`.
+
+* Add this:
+
+```{bash, eval=FALSE}
+AZURE_STORAGE_CONTAINER="test-container"
+AZURE_STORAGE_ACCOUNT="2diiteststorage"
+# Not my real key
+AZURE_STORAGE_KEY="ABABAB...=="
+```
+
+* Replace "ABABAB...==" with the value I'll share privately.
+
+* Ensure the file ends with a new line.
+
+* Save, close, and restart R.
+
+* Set these variables in you .Renviron. See `?usethis::edit_r_environ()`.
+
+
